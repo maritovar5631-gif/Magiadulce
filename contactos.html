@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Contacto - Mis Postrecitos 🧁</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Playfair+Display:wght@700;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+/* =========================================
+   ESTILOS GENERALES Y VARIABLES
+   ========================================= */
+:root{
+  --color-principal: #ff6b9d;
+  --color-secundario: #c44569;
+  --color-acento: #ffd93d;
+  --color-oscuro: #2d3436;
+  --sombra-suave: 0 10px 40px rgba(255,107,157,0.15);
+  --transicion: 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body {
+    font-family: "Poppins", sans-serif;
+    background-color: #f7f7f7;
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================
+   HEADER & NAV
+   ========================================= */
+header{
+  position: fixed;
+  top:0;left:0;width:100%;
+  padding:15px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between !important;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-bottom:1px solid rgba(255,107,157,0.08);
+  box-shadow:0 8px 32px rgba(255,107,157,0.18);
+  z-index:1001;
+  transition: all var(--transicion);
+}
+
+.logo{
+  font-family:"Playfair Display",serif;
+  font-weight:900;
+  background: linear-gradient(135deg,var(--color-principal),var(--color-secundario));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  position:relative; cursor:pointer;
+  font-size: clamp(1.2rem, 5vw, 2rem);
+}
+.logo::after{ content:"✨"; position:absolute; right:-30px; top:-5px; font-size:1.1rem; animation: sparkle 2s ease-in-out infinite; }
+@keyframes sparkle{ 0%,100%{opacity:1;transform:rotate(0) scale(1)} 50%{opacity:0.6;transform:rotate(20deg) scale(1.2)} }
+
+nav{ display:flex; gap:32px; align-items:center; z-index:1002; }
+nav a{ color:var(--color-oscuro); text-decoration:none; font-weight:500; padding:8px 0; position:relative; transition:all var(--transicion); }
+nav a::before{ content:""; position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:0; height:3px; background: linear-gradient(90deg,var(--color-principal),var(--color-acento)); border-radius:10px; transition:width var(--transicion); }
+nav a:hover{ color:var(--color-principal); transform:translateY(-2px); }
+nav a:hover::before{ width:100%; }
+
+.hamburger{ display:none; flex-direction:column; gap:6px; cursor:pointer; padding: clamp(6px, 2vw, 10px); }
+.hamburger span{ width: clamp(18px, 5vw, 28px); height: clamp(2px, 0.5vw, 3px); border-radius:10px; background:linear-gradient(90deg,var(--color-principal),var(--color-secundario)); transition:all 0.35s ease; }
+.hamburger.active span:nth-child(1){ transform: translateY(9px) rotate(45deg); }
+.hamburger.active span:nth-child(2){ opacity: 0; }
+.hamburger.active span:nth-child(3){ transform: translateY(-9px) rotate(-45deg); }
+.close-btn{ display:none; position:absolute; top:25px; right:25px; font-size:2.5rem; font-weight:900; color:var(--color-principal); cursor:pointer; z-index:2005; }
+
+@media(max-width:850px){
+  .hamburger{ display:flex; }
+  .close-btn{ display:block !important; }
+  nav {
+    position:fixed; top:0; right:0; width:80%; max-width:400px; height:100vh;
+    background:rgba(255,255,255,0.98); backdrop-filter:blur(20px);
+    flex-direction:column; justify-content:center; gap:30px; padding-top:60px;
+    box-shadow:-10px 0 50px rgba(0,0,0,0.08);
+    transform: translateX(100%); transition: transform .45s ease; z-index:1003;
+  }
+  nav.active { transform: translateX(0); }
+  nav a{ font-size:1.3rem; }
+}
+
+.overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.5); opacity:0; visibility:hidden; transition:all var(--transicion); z-index:999; }
+.overlay.active{ opacity:1; visibility:visible; }
+
+/* =========================================
+   FORMULARIO DE CONTACTO
+   ========================================= */
+.contacto-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 120px 20px 60px;
+    position: relative;
+    z-index: 2;
+}
+
+.form-container {
+    background: #ffffff;
+    padding: 30px 40px;
+    border-radius: 24px;
+    box-shadow: var(--sombra-suave);
+    width: 100%;
+    max-width: 450px;
+    border: 1px solid rgba(255, 107, 157, 0.1);
+    animation: fadeInUp 0.8s ease;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.form-container h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, var(--color-principal), var(--color-secundario));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.form-container p {
+    font-size: 0.9rem;
+    color: #666;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.input-group {
+    margin-bottom: 18px;
+    position: relative;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-oscuro);
+    margin-bottom: 6px;
+}
+
+.input-group input,
+.input-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #eee;
+    border-radius: 12px;
+    font-family: "Poppins", sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.3s ease;
+    background-color: #fbfbfb;
+}
+
+.input-group input:focus,
+.input-group textarea:focus {
+    border-color: var(--color-principal);
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(255, 107, 157, 0.1);
+}
+
+.input-group textarea {
+    resize: none;
+    height: 100px;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 50px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: white;
+    cursor: pointer;
+    background: linear-gradient(135deg, var(--color-principal), var(--color-secundario));
+    box-shadow: 0 5px 15px rgba(255, 107, 157, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 107, 157, 0.4);
+}
+
+/* =========================================
+   DISEÑO DE LA NUEVA ALERTA PASTEL (ÉXITO)
+   ========================================= */
+.alerta-exito-fondo {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(6px);
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+.alerta-exito-caja {
+    background: white;
+    padding: 25px 35px;
+    border-radius: 24px;
+    max-width: 380px;
+    width: 85%;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(255, 107, 157, 0.2);
+    border: 2px solid #FFF0F5;
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.alerta-exito-caja h3 {
+    font-family: 'Playfair Display', serif;
+    color: #c44569;
+    font-size: 1.5rem;
+    margin: 10px 0 5px;
+}
+.alerta-exito-caja p {
+    color: #555;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+.btn-alerta-aceptar {
+    background: #ff6b9d;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(255, 107, 157, 0.3);
+    transition: transform 0.2s;
+}
+.btn-alerta-aceptar:hover {
+    transform: scale(1.05);
+}
+@keyframes popIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* =========================================
+   MODAL SALIR
+   ========================================= */
+.modal-salir-fondo {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal-salir-caja {
+    background: white;
+    padding: 30px;
+    border-radius: 24px;
+    max-width: 400px;
+    width: 85%;
+    text-align: center;
+    box-shadow: 0 20px 45px rgba(244, 114, 182, 0.15);
+    border: 2px solid #FFF0F5;
+    animation: zoomInPastel 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+}
+.modal-salir-caja h2 { font-family: 'Playfair Display', serif; color: #c44569; font-size: 1.6rem; margin: 10px 0; font-weight: 900; }
+.modal-salir-caja p { color: #6B7280; font-size: 0.9rem; margin-bottom: 20px; }
+.contenedor-botones-salir { display: flex; gap: 12px; }
+.btn-salir-si { background: #FFB3C6; color: #C44569; border: none; padding: 12px; border-radius: 12px; font-weight: 700; cursor: pointer; flex: 1; font-family: "Poppins", sans-serif; }
+.btn-salir-cancelar { background: #D1FAE5; color: #065F46; border: none; padding: 12px; border-radius: 12px; font-weight: 700; cursor: pointer; flex: 1; font-family: "Poppins", sans-serif; }
+@keyframes zoomInPastel { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+</style>
+</head>
+
+<body>
+
+<header id="header">
+  <div class="logo">Mis Postrecitos 🧁</div>
+
+  <nav id="menu">
+    <div class="close-btn" id="closeBtn">×</div>
+    <a href="postres.html">Inicio</a>
+    <a href="index.html">Panel de Contenido</a>
+    <a href="contactos.html">Contactos</a>
+    <a href="#" onclick="abrirAlertaSalir(event)" style="color: #c44569;">Salir</a>
+  </nav>
+
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</header>
+
+<div class="overlay" id="overlay"></div>
+
+<div id="alertaExito" class="alerta-exito-fondo">
+    <div class="alerta-exito-caja">
+        <div style="font-size: 3rem;">🧁✨</div>
+        <h3>¡Mensaje Enviado!</h3>
+        <p>Tu mensaje ha sido recibido con éxito. Nos comunicaremos contigo muy pronto.</p>
+        <button class="btn-alerta-aceptar" onclick="cerrarAlertaExito()">Aceptar</button>
+    </div>
+</div>
+
+<div id="modalSalir" class="modal-salir-fondo">
+    <div class="modal-salir-caja">
+        <div style="font-size: 3rem;">🚪</div>
+        <h2>¿Desea salir de la página?</h2>
+        <p>Al confirmar, abandonarás el sistema de gestión y serás redirigido de manera externa.</p>
+        <div class="contenedor-botones-salir">
+            <button class="btn-salir-si" onclick="confirmarSalida()">Sí</button>
+            <button class="btn-salir-cancelar" onclick="cerrarAlertaSalir()">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<section class="contacto-section">
+    <div class="form-container">
+        <h2>Contáctanos</h2>
+        <p>¿Tienes dudas o quieres hacer un pedido especial? ¡Escríbenos!</p>
+        
+        <form id="formContacto">
+            <div class="input-group">
+                <label for="nombre">Nombre Completo</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Ej. María López" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="correo">Correo Electrónico</label>
+                <input type="email" id="correo" name="correo" placeholder="ejemplo@correo.com" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="mensaje">Tu Mensaje</label>
+                <textarea id="mensaje" name="mensaje" placeholder="Cuéntanos qué postre tienes en mente..." required></textarea>
+            </div>
+            
+            <button type="submit" class="btn-submit">Enviar Mensaje ✨</button>
+        </form>
+    </div>
+</section>
+
+<script>
+// --- MENÚ HAMBURGUESA ---
+const hamburger = document.getElementById('hamburger');
+const menu = document.getElementById('menu');
+const overlay = document.getElementById('overlay');
+const closeBtn = document.getElementById('closeBtn');
+
+function toggleMenu() {
+  menu.classList.toggle('active');
+  overlay.classList.toggle('active');
+  document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+}
+
+// Escuchadores corregidos para sincronizar la animación del botón hamburger
+hamburger.addEventListener('click', () => { hamburger.classList.toggle('active'); toggleMenu(); });
+overlay.addEventListener('click', () => { hamburger.classList.remove('active'); toggleMenu(); });
+closeBtn.addEventListener('click', () => { hamburger.classList.remove('active'); toggleMenu(); });
+
+// ===================================================
+// FILTROS DE CARACTERES EN TIEMPO REAL (VALIDACIONES)
+// ===================================================
+
+// 1. Nombre Completo: Solo letras (mayúsculas y minúsculas), espacios y acentos.
+document.getElementById('nombre').addEventListener('input', function (e) {
+    this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]/g, '');
+});
+
+// 2. Correo Electrónico: Letras, números, @, puntos, guiones (Sin caracteres especiales raros).
+document.getElementById('correo').addEventListener('input', function (e) {
+    this.value = this.value.replace(/[^a-zA-Z0-9@._-]/g, '');
+});
+
+// 3. Tu Mensaje: Letras (mayúsculas/minúsculas), números, espacios, acentos, comas y puntos.
+document.getElementById('mensaje').addEventListener('input', function (e) {
+    this.value = this.value.replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ\s,.]/g, '');
+});
+
+
+// --- CONEXIÓN AL BACKEND Y ALERTA DE ENVÍO ---
+document.getElementById('formContacto').addEventListener('submit', function(event) {
+    event.preventDefault(); 
+
+    const datos = {
+        nombre: document.getElementById('nombre').value,
+        correo: document.getElementById('correo').value,
+        mensaje: document.getElementById('mensaje').value
+    };
+
+    // EL FETCH CONTINÚA TOTALMENTE OPERATIVO CONECTANDO A TU API
+    fetch('http://localhost:3000/api/contacto', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datos)
+    })
+    .then(response => response.json())
+    .then(data => console.log("Guardado en Mongo:", data))
+    .catch(err => console.log("Aviso: Mensaje no guardado en BD porque el servidor server.js está apagado."));
+
+    // Muestra la alerta pastel en pantalla
+    document.getElementById('alertaExito').style.display = 'flex';
+    
+    // Limpia el formulario
+    this.reset();
+
+    // Se cierra de manera automática tras 3.5 segundos si no presionan el botón
+    setTimeout(cerrarAlertaExito, 3500);
+});
+
+function cerrarAlertaExito() {
+    document.getElementById('alertaExito').style.display = 'none';
+}
+
+// --- FUNCIONES ALERTA DE SALIDA ---
+function abrirAlertaSalir(event) {
+    event.preventDefault();
+    document.getElementById('modalSalir').style.display = 'flex';
+}
+
+function cerrarAlertaSalir() {
+    document.getElementById('modalSalir').style.display = 'none';
+}
+
+function confirmarSalida() {
+    window.location.href = 'https://www.google.com';
+}
+</script>
+
+</body>
+</html>

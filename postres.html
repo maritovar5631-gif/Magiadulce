@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mis Postres 🧁</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Playfair+Display:wght@700;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+    /* =========================================
+       ESTILOS GENERALES
+       ========================================= */
+    :root{
+      --color-principal: #ff6b9d;
+      --color-secundario: #c44569;
+      --color-acento: #ffd93d;
+      --color-oscuro: #2d3436;
+      --sombra-suave: 0 10px 40px rgba(255,107,157,0.15);
+      --sombra-hover: 0 15px 60px rgba(255,107,157,0.3);
+      --transicion: 0.4s cubic-bezier(0.4,0,0.2,1);
+      
+      /* Variables adicionales */
+      --pastel-menta: #a8dadc;
+      --pastel-melocoton: #fcc9b9;
+      --pastel-lavanda: #c1b1d8;
+      --pastel-limon: #f0e68c;
+      --texto-oscuro: #3d5a80;
+      --texto-resalte: #293241;
+
+      /* Variables Menu Grid */
+      --bg: hsl(0, 0%, 97%);
+      --bg-2: #ffffff;
+      --text: #f7f5ff;
+      --muted: #d9d4ff;
+      --card: #ffffff;
+      --ink: #26242e;
+      --accent: #ff6b4a;
+      --accent-2: #ff8466;
+      --radius: 18px;
+      --shadow: 0 10px 25px rgba(24, 14, 55, 0.25);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+
+    body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f7f7f7;
+        overflow-x: hidden;
+    }
+
+    /* =========================================
+       ANIMACIONES DE FONDO
+       ========================================= */
+    .confetti {
+      position: fixed;
+      inset: 0;
+      background-image: url('https://usagif.com/wp-content/uploads/gif/confetti-18.gif');
+      background-repeat: no-repeat;
+      background-position: center top;
+      background-size: cover;
+      opacity: 0.55;
+      pointer-events: none;
+      z-index: 0;
+      mix-blend-mode: normal;
+    }
+
+    .cake-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .floating-cake {
+      position: absolute;
+      bottom: -50px;
+      font-size: 24px;
+      opacity: 0;
+      animation: floatUp linear forwards;
+      filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.6; }
+      100% { transform: translateY(-110vh) rotate(360deg) scale(1.1); opacity: 0; }
+    }
+
+    /* =========================================
+       HEADER & NAV
+       ========================================= */
+    header{
+      position: fixed;
+      top:0;left:0;width:100%;
+      padding:15px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between !important;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(20px) saturate(180%);
+      border-bottom:1px solid rgba(255,107,157,0.08);
+      box-shadow:0 8px 32px rgba(255,107,157,0.18);
+      z-index:1001;
+      transition: all var(--transicion);
+    }
+
+    header.scrolled {
+        box-shadow: 0 4px 20px rgba(255, 107, 157, 0.25);
+    }
+
+    .logo{
+      font-family:"Playfair Display",serif;
+      font-weight:900;
+      background: linear-gradient(135deg,var(--color-principal),var(--color-secundario));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      position:relative; cursor:pointer;
+      font-size: clamp(1.2rem, 5vw, 2rem);
+    }
+    .logo::after{ content:"✨"; position:absolute; right:-30px; top:-5px; font-size:1.1rem; animation: sparkle 2s ease-in-out infinite; }
+    @keyframes sparkle{ 0%,100%{opacity:1;transform:rotate(0) scale(1)} 50%{opacity:0.6;transform:rotate(20deg) scale(1.2)} }
+
+    nav{ display:flex; gap:32px; align-items:center; z-index:1002; }
+    nav a{ color:var(--color-oscuro); text-decoration:none; font-weight:500; padding:8px 0; position:relative; transition:all var(--transicion); }
+    nav a::before{ content:""; position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:0; height:3px; background: linear-gradient(90deg,var(--color-principal),var(--color-acento)); border-radius:10px; transition:width var(--transicion); }
+    nav a:hover{ color:var(--color-principal); transform:translateY(-2px); }
+    nav a:hover::before{ width:100%; }
+
+    .hamburger{
+      display:none;
+      flex-direction:column;
+      gap:6px;
+      cursor:pointer;
+      padding: clamp(6px, 2vw, 10px);
+    }
+    .hamburger span{
+      width: clamp(18px, 5vw, 28px);
+      height: clamp(2px, 0.5vw, 3px);
+      border-radius:10px;
+      background:linear-gradient(90deg,var(--color-principal),var(--color-secundario));
+      transition:all 0.35s ease;
+    }
+
+    .hamburger.active span:nth-child(1){ transform: translateY(8px) rotate(45deg); }
+    .hamburger.active span:nth-child(2){ opacity: 0; }
+    .hamburger.active span:nth-child(3){ transform: translateY(-8px) rotate(-45deg); }
+
+    .close-btn{
+      display:none;
+      position:absolute;
+      top:25px;
+      right:25px;
+      font-size:2.5rem;
+      font-weight:900;
+      color:var(--color-principal);
+      cursor:pointer;
+      z-index:2005;
+    }
+
+    @media(max-width:850px){
+      .hamburger{ display:flex; }
+      .close-btn{ display:block !important; }
+      nav {
+        position:fixed; top:0; right:0; width:80%; max-width:400px; height:100vh;
+        background:rgba(255,255,255,0.98); backdrop-filter:blur(20px);
+        flex-direction:column; justify-content:center; gap:30px; padding-top:60px;
+        box-shadow:-10px 0 50px rgba(0,0,0,0.08);
+        transform: translateX(100%); transition: transform .45s ease; z-index:1003;
+      }
+      nav.active { transform: translateX(0); }
+      nav a{ font-size:1.3rem; }
+    }
+
+    /* =========================================
+       HERO SECTION
+       ========================================= */
+    .hero{
+      position:relative;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:120px 20px 60px;
+      overflow:hidden;
+      z-index:1;
+    }
+    .hero::before, .hero::after{
+      content:"🧁";
+      position:absolute;
+      font-size:120px;
+      opacity:0.08;
+      animation: float 6s ease-in-out infinite;
+      z-index:0;
+      pointer-events:none;
+    }
+    .hero::before{ top:15%; left:10%; animation-delay:0s; }
+    .hero::after{ content:"🍰"; bottom:15%; right:10%; animation-delay:3s; }
+    @keyframes float{ 0%,100%{ transform:translateY(0) rotate(0deg);} 50%{ transform:translateY(-30px) rotate(10deg);} }
+
+    .hero-content{ position:relative; z-index:2; max-width:900px; animation: fadeInUp 1s ease; }
+    .hero h1{
+      font-family:"Playfair Display",serif; 
+      font-size:4.5rem; 
+      font-weight:900; 
+      line-height:1.05; 
+      margin-bottom:20px;
+      background: linear-gradient(135deg,var(--color-principal) 0%, var(--color-secundario) 50%, var(--color-acento) 100%);
+      -webkit-background-clip:text; 
+      -webkit-text-fill-color:transparent;
+      animation: fadeInUp 1s ease .4s backwards;
+    }
+    .hero p{ font-size:1.15rem; color:#666; line-height:1.75; margin-bottom:30px; font-weight:300; animation: fadeInUp 1s ease .6s backwards; }
+
+    @keyframes fadeInUp{ from{ opacity:0; transform:translateY(40px);} to{ opacity:1; transform:translateY(0);} }
+
+    .btn-group{ display:flex; gap:20px; justify-content:center; flex-wrap:wrap; z-index:2; animation:fadeInUp 1s ease .8s backwards; }
+    .btn{ position:relative; display:inline-flex; align-items:center; gap:10px; padding:16px 40px; font-weight:600; border-radius:50px; text-decoration:none; color:white; z-index:2; }
+    .btn-primary{ background: linear-gradient(135deg,var(--color-principal),var(--color-secundario)); box-shadow:var(--sombra-suave); }
+    .btn-secondary{ background:white; color:var(--color-principal); border:2px solid var(--color-principal); box-shadow:var(--sombra-suave); }
+
+    .overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.5); opacity:0; visibility:hidden; transition:all var(--transicion); z-index:999; }
+    .overlay.active{ opacity:1; visibility:visible; }
+
+    /* =========================================
+       INFOGRAFÍA
+       ========================================= */
+    .infografia {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 0 15px;
+      position: relative; z-index: 2;
+    }
+
+    .infografia h1, .seccion-titulo-postrecitos h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 3rem;
+      font-weight: 700;
+      color: #ff4a87;
+      text-align: center;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+    }
+
+    .infografia h1 { margin-bottom: 30px; }
+
+    .bloque {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      overflow: hidden;
+      border: 1px solid rgba(216, 168, 92, 0.4);
+      box-shadow: 0 8px 25px rgba(255, 160, 200, 0.25);
+    }
+
+    .bloque img {
+      width: 100%;
+      max-width: 130px;
+      height: auto;
+      border-radius: 18px;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    .bloque:hover img { transform: scale(1.08) translateY(-4px); }
+    .bloque h3 { color: #ff5f9e; font-size: 1.2rem; font-weight: 600; text-align:center; margin:10px 0 5px 0; }
+    .bloque p { color:#5a5a5a; font-size:0.95rem; text-align:center; line-height:1.4; }
+
+    @media(min-width:600px){
+      .bloque { flex-direction: row; align-items: center; text-align:left; gap: 20px; }
+      .bloque:nth-child(even){ flex-direction: row-reverse; }
+      .bloque img { width:130px; height:130px; flex-shrink:0; }
+      .bloque div { flex:1; }
+    }
+
+    /* =========================================
+       SLIDER
+       ========================================= */
+    .slider {
+      position: relative;
+      width: 100%;
+      height: 80vh;
+      overflow: hidden;
+      border-radius: 0;
+      margin-top: 50px;
+      z-index: 2;
+    }
+
+    .slides { width: 100%; height: 100%; position: relative; }
+    .slide { position: absolute; width: 100%; height: 100%; opacity: 0; transition: opacity 1s ease-in-out; }
+    .slide.active { opacity: 1; }
+    .slide img { width: 100%; height: 100%; object-fit: cover; filter: brightness(75%) contrast(1.05); }
+
+    .caption {
+      position: absolute; bottom: 10%; left: 50%; transform: translateX(-50%);
+      text-align: center;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(8px);
+      border-radius: 18px;
+      padding: 15px 25px;
+      color: #333;
+      max-width: 500px;
+      box-shadow: 0 4px 20px rgba(249, 115, 184, 0.25);
+      animation: fadeInUp 1s ease;
+    }
+    .caption h2 {
+      font-size: 2rem;
+      background: linear-gradient(90deg, #f973b8, #ffb6c1);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 8px; font-weight: 700;
+    }
+    .caption p { color: #fff; font-size: 0.95rem; line-height: 1.5; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+
+    .controls span {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      font-size: 2rem; color: #fff;
+      background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(10px);
+      border-radius: 50%; padding: 10px 15px; cursor: pointer;
+      transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      user-select: none; z-index: 10;
+    }
+    .controls span:hover { background: rgba(255, 182, 193, 0.8); transform: translateY(-50%) scale(1.1); }
+    .prev { left: 30px; }
+    .next { right: 30px; }
+
+    .indicators {
+      position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 10px; z-index: 10;
+    }
+    .indicators div {
+      width: 12px; height: 12px; background: rgba(255,255,255,0.5);
+      border-radius: 50%; cursor: pointer; transition: background 0.3s;
+    }
+    .indicators div.active { background: #ff6b9d; }
+
+    /* SECCIÓN DE TÍTULO CENTRADO BAJO EL SLIDER */
+    .seccion-titulo-postrecitos {
+      width: 100%;
+      text-align: center;
+      padding: 50px 15px 10px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* =========================================
+       MENU SECTIONS (GRID)
+       ========================================= */
+    .menu-section{
+      padding: 20px 20px 60px;
+      background: linear-gradient(135deg, var(--bg) 0%, var(--bg-2) 100%);
+      position: relative; z-index: 2;
+    }
+
+    .menu-container{ max-width: 1100px; margin: 0 auto; }
+    .menu-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    @media (max-width: 992px){ .menu-grid{ grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 640px){ .menu-grid{ grid-template-columns: 1fr; } }
+
+    .menu-card{
+      background: var(--card); border-radius: var(--radius);
+      overflow: hidden; box-shadow: var(--shadow);
+      display: flex; flex-direction: column;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .menu-card:hover{ transform: translateY(-4px); box-shadow: 0 18px 36px rgba(24, 14, 55, 0.30); }
+
+    .card-media{ aspect-ratio: 1.2 / 1; background: #efeafc; position: relative; overflow: hidden; }
+    .card-media img{ width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1); transition: transform .5s ease; }
+    .menu-card:hover .card-media img{ transform: scale(1.04); }
+
+    .card-content{ padding: 18px 18px 16px; color: var(--ink); display: grid; gap: 10px; }
+    .card-title{ margin: 0; font-size: clamp(18px, 2.6vw, 22px); font-weight: 700; color: var(--ink); }
+    .card-desc{ margin: 0; font-size: 14px; color: #6b6880; }
+
+    .card-footer{ margin-top: 6px; display: flex; align-items: center; justify-content: space-between; }
+    .price{ font-weight: 800; font-size: 18px; color: var(--ink); letter-spacing: .3px; }
+
+    .btn-buy{
+      appearance: none; border: none; outline: none; cursor: pointer;
+      padding: 10px 22px; border-radius: 999px;
+      background: linear-gradient(135deg, #ffb3c6, #ff8da1);
+      color: #fff; font-family: "Poppins", sans-serif; font-weight: 700; font-size: 14px;
+      box-shadow: 0 6px 15px rgba(255, 141, 161, 0.35);
+      transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+    }
+    .btn-buy:hover{ transform: translateY(-1px); box-shadow: 0 10px 20px rgba(255, 141, 161, 0.5); filter: saturate(1.05); }
+
+    /* =========================================
+       ALERTA DE CARRITO
+       ========================================= */
+    .alerta-carrito-fondo {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(4px);
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+    }
+    .alerta-carrito-caja {
+        background: white;
+        padding: 25px 35px;
+        border-radius: 24px;
+        max-width: 360px;
+        width: 85%;
+        text-align: center;
+        box-shadow: 0 15px 35px rgba(255, 107, 157, 0.2);
+        border: 2px solid #FFF0F5;
+        animation: zoomInPastel 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+    }
+    .alerta-carrito-caja h3 {
+        font-family: 'Playfair Display', serif;
+        color: #c44569;
+        font-size: 1.4rem;
+        margin: 8px 0 4px;
+    }
+    .alerta-carrito-caja p { color: #555; font-size: 0.9rem; margin-bottom: 15px; line-height: 1.4; }
+    .btn-carrito-aceptar {
+        background: #ff6b9d; color: white; border: none; padding: 8px 25px;
+        border-radius: 50px; font-family: "Poppins", sans-serif; font-weight: 600;
+        font-size: 0.85rem; cursor: pointer; box-shadow: 0 4px 10px rgba(255, 107, 157, 0.25); transition: transform 0.2s;
+    }
+    .btn-carrito-aceptar:hover { transform: scale(1.05); }
+
+    /* =========================================
+       DISEÑO MODAL "SALIR" ESTILO PASTEL
+       ========================================= */
+    .modal-salir-fondo {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(8px);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+    .modal-salir-caja {
+        background: white;
+        padding: 30px;
+        border-radius: 24px;
+        max-width: 400px;
+        width: 85%;
+        text-align: center;
+        box-shadow: 0 20px 45px rgba(244, 114, 182, 0.15);
+        border: 2px solid #FFF0F5;
+        animation: zoomInPastel 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+    }
+    .modal-salir-caja h2 {
+        font-family: 'Playfair Display', serif;
+        color: #7C3AED;
+        font-size: 1.6rem;
+        margin: 10px 0;
+        font-weight: 900;
+    }
+    .modal-salir-caja p {
+        color: #6B7280;
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+    }
+    .contenedor-botones-salir {
+        display: flex;
+        gap: 12px;
+    }
+    .btn-salir-si {
+        background: #FFB3C6;
+        color: #C44569;
+        border: none;
+        padding: 12px;
+        border-radius: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        flex: 1;
+        font-family: "Poppins", sans-serif;
+        font-size: 0.9rem;
+    }
+    .btn-salir-cancelar {
+        background: #D1FAE5;
+        color: #065F46;
+        border: none;
+        padding: 12px;
+        border-radius: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        flex: 1;
+        font-family: "Poppins", sans-serif;
+        font-size: 0.9rem;
+    }
+    @keyframes zoomInPastel {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    /* =========================================
+       FOOTER UNIFICADO
+       ========================================= */
+    footer {
+        background: linear-gradient(to bottom, #ffffff, #ffeef3);
+        border-top: 1px solid rgba(255,107,157,0.1); padding: 40px 20px 20px;
+        text-align: center; margin-top: 60px;
+        position: relative; z-index: 5;
+    }
+    .footer-contenido { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+    .footer-logo { font-family: "Playfair Display", serif; font-weight: 900; font-size: 1.6rem; color: var(--color-secundario); }
+    .footer-redes { display: flex; gap: 20px; }
+    .footer-redes a { color: var(--color-principal); font-size: 1.3rem; transition: transform 0.3s ease; text-decoration: none; }
+    .footer-redes a:hover { transform: scale(1.2) translateY(-3px); color: var(--color-secundario); }
+    .footer-info { font-size: 0.85rem; color: #666; line-height: 1.6; }
+    .footer-derechos { font-size: 0.8rem; color: #999; margin-top: 15px; border-top: 1px solid rgba(255,107,157,0.08); padding-top: 15px; width: 100%; }
+    </style>
+</head>
+
+<body>
+
+<header id="header">
+  <div class="logo">Mis Postres 🧁</div>
+
+  <nav id="menu">
+    <div class="close-btn" id="closeBtn">×</div>
+    <a href="postres.html">Inicio</a>
+    <a href="index.html">Panel de Información </a>
+    <a href="contactos.html">Contáctos</a>
+    <a href="#" onclick="abrirAlertaSalir(event)" style="color: #c44569;">Salir</a>
+  </nav>
+
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</header>
+
+<div class="confetti"></div>
+<div class="cake-background" id="cakeBackground"></div>
+<div class="overlay" id="overlay"></div>
+
+<div id="alertaCarrito" class="alerta-carrito-fondo">
+    <div class="alerta-carrito-caja">
+        <div style="font-size: 2.5rem; margin-bottom: 5px;">🛒✨</div>
+        <h3>¡Añadido al carrito!</h3>
+        <p id="textoAlertaCarrito">Tu postre ha sido seleccionado correctamente.</p>
+        <button class="btn-carrito-aceptar" onclick="cerrarAlertaCarrito()">Aceptar</button>
+    </div>
+</div>
+
+<div id="modalSalir" class="modal-salir-fondo">
+    <div class="modal-salir-caja">
+        <div style="font-size: 3rem;">🚪</div>
+        <h2>¿Desea salir de la página?</h2>
+        <p>Al confirmar, abandonarás el sistema de gestión y serás redirigido de manera externa.</p>
+        <div class="contenedor-botones-salir">
+            <button class="btn-salir-si" onclick="confirmarSalida()">Sí</button>
+            <button class="btn-salir-cancelar" onclick="cerrarAlertaSalir()">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<section class="hero">
+  <div class="hero-content">
+    <h1>Bienvenido a Mis Postrecitos</h1>
+    <p>Una experiencia deliciosa que te transporta a un mundo de sabores únicos y momentos inolvidables. Descubre nuestros postres artesanales hechos con amor y los mejores ingredientes.</p>
+    <div class="btn-group">
+      <a href="ofertas.html" class="btn btn-primary">Antojos y Ofertas</a>
+      <a href="contactos.html" class="btn btn-secondary">Contáctanos</a>
+    </div>
+  </div>
+</section>
+
+<section>
+<div class="infografia">
+  <h1>Mis Pastelitos</h1>
+
+  <div class="bloque">
+    <img src="https://i.pinimg.com/736x/ed/98/fb/ed98fb9dbe1870964dcf50b50a44fc21.jpg" alt="Confetti Cake Cookies">
+    <div>
+      <h3>"Pastel de Chocolate"</h3>
+      <p>Puro placer en cada bocado: intenso, húmedo y tan delicioso que te hará suspirar.</p>
+    </div>
+  </div>
+
+  <div class="bloque">
+    <img src="https://i.pinimg.com/736x/47/30/d1/4730d14e2ccbda93001f3642c8e5d1ae.jpg" alt="Oreo Cookies">
+    <div>
+      <h3>"Pastel de Oreo"</h3>
+      <p>Crujiente, cremoso y lleno de galleta: la mezcla de chocolate y vainilla que vuelve locos a grandes y chicos.</p>
+    </div>
+  </div>
+
+  <div class="bloque">
+    <img src="https://i.pinimg.com/736x/9d/58/ab/9d58abee35ef1a1f9b87b739a779f950.jpg" alt="Red Velvet Cookies">
+    <div>
+      <h3>"Pastel de 3 leches"</h3>
+      <p>Jugoso, cremoso y dulce a la perfección: el clásico que nunca falla y siempre enamora.</p>
+    </div>
+  </div>
+
+  <div class="bloque">
+    <img src="https://i.pinimg.com/736x/46/cc/29/46cc29286d9c6fa0b2e9396dca488103.jpg" alt="Chocolate Filled Cookies">
+    <div>
+      <h3>"Pastel de Vainilla con Fresas"</h3>
+      <p> Fresco, ligero y dulce: la combinación perfecta que alegra cualquier celebración.</p>
+    </div>
+  </div>
+
+  <div class="bloque">
+    <img src="https://i.pinimg.com/736x/60/df/69/60df690d3659b70c52d46a8b470da2f7.jpg" alt="Strawberry Shortcake Cookies">
+    <div>
+      <h3>"Pastel de Moca"</h3>
+      <p> La mezcla perfecta: chocolate intenso y café aromático, un sabor profundo y delicioso que te encantará</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section class="slider">
+  <div class="slides">
+    <div class="slide active">
+      <img src="https://i.pinimg.com/736x/05/04/49/0504499bf1855a33defcdcf87e8dd386.jpg" alt="Cupcakes coloridos">
+      <div class="caption">
+        <h2>Pastel de Oreo</h2>
+        <p>Crujiente, cremoso y lleno de galleta: la mezcla de chocolate y vainilla que vuelve locos a grandes y chicos.</p>
+      </div>
+    </div>
+
+    <div class="slide">
+      <img src="https://i.pinimg.com/736x/c8/dd/e5/c8dde5e5fac9aceb20e6f9e0d292d67a.jpg" alt="Pay de Limón">
+      <div class="caption">
+        <h2>Fresas con Crema</h2>
+        <p>Rico y delicioso , listo para compartir.</p>
+      </div>
+    </div>
+
+    <div class="slide">
+      <img src="https://i.pinimg.com/736x/6a/b1/15/6ab115a7e22205d69ad7673a333f16c2.jpg" alt="Macarons">
+      <div class="caption">
+        <h2>Macarons</h2>
+        <p>Macarons y postres artesanales que enamoran a primera vista.</p>
+      </div>
+    </div>
+
+    <div class="slide">
+      <img src="https://i.pinimg.com/1200x/46/f8/9c/46f89cd702588e11655c22ae56c9e51e.jpg" alt="Bronchetas">
+      <div class="caption">
+        <h2>Cookis de Unicornio</h2>
+        <p>La magia del sabor  en tus postres favoritos.</p>
+      </div>
+    </div>
+
+    <div class="slide">
+      <img src="https://i.pinimg.com/736x/28/57/b6/2857b671c8a3905d546f90e5eb604d61.jpg" alt="Donitas">
+      <div class="caption">
+        <h2>Donitas</h2>
+        <p>Una explosión de colores y sabores.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <span class="prev" onclick="moveSlide(-1)">&#10094;</span>
+    <span class="next" onclick="moveSlide(1)">&#10095;</span>
+  </div>
+
+  <div class="indicators"></div>
+</section>
+
+<div class="seccion-titulo-postrecitos">
+  <h1>Menú del día</h1>
+</div>
+
+<section class="menu-section" aria-labelledby="menu-title">
+  <div class="menu-container">
+    <div class="menu-grid">
+
+      <article class="menu-card">
+        <div class="card-media">
+          <img src="https://i.pinimg.com/1200x/83/6c/32/836c32d8c1df8ed23c8c778ff5f5829f.jpg" alt="Donas">
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Fresas con Crema </h3>
+          <p class="card-desc">Incluye fresa que se sirven troceadas y crema glass para una mejor dulsura.</p>
+          <div class="card-footer">
+            <span class="price">$65.00</span>
+            <button class="btn-buy" type="button" onclick="lanzarAlertaCarrito('Fresas con Crema')">Comprar</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="menu-card">
+        <div class="card-media">
+          <img src="https://i.pinimg.com/736x/84/e0/e7/84e0e75820d8ab865fb0f7bcd05ff7bb.jpg" alt="Cheesecake">
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Brownies</h3>
+          <p class="card-desc">Postre de chocolate con una textura densa y húmeda, famosa por su combinación de exterior ligeramente crujiente e interior suave.</p>
+          <div class="card-footer">
+            <span class="price">$45.00</span>
+            <button class="btn-buy" type="button" onclick="lanzarAlertaCarrito('Brownies')">Comprar</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="menu-card">
+        <div class="card-media">
+          <img src="https://i.pinimg.com/736x/7f/09/c8/7f09c8a792c10e376dc4190f2df65825.jpg" alt="Hersheys">
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Platano con crema</h3>
+          <p class="card-desc">Es un postre sencillo  suave y dulce del plátano maduro con la cremosidad de la crema.</p>
+          <div class="card-footer">
+            <span class="price">$70.00</span>
+            <button class="btn-buy" type="button" onclick="lanzarAlertaCarrito('Platano con crema')">Comprar</button>
+          </div>
+        </div>
+      </article>
+      
+    </div>
+  </div>
+</section>
+
+<section class="menu-section">
+  <div class="menu-container">
+    <div class="menu-grid">
+
+      <article class="menu-card">
+        <div class="card-media">
+          <img src="https://i.pinimg.com/736x/85/47/33/854733931972ffc5aa2a2606feff7329.jpg" alt="Tarta">
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Pay de bombones con Fresa</h3>
+          <p class="card-desc">Cremosa y suave que combina la dulzura de los bombones derretidos con la frescura de las fresas.</p>
+          <div class="card-footer">
+            <span class="price">$85.00</span>
+            <button class="btn-buy" type="button" onclick="lanzarAlertaCarrito('Pay de bombones con Fresa')">Comprar</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="menu-card">
+        <div class="card-media">
+          <img src="https://i.pinimg.com/1200x/08/4a/35/084a35e940fee6a2e7e03f3afa4b8c15.jpg" alt="Oreo">
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Cheesecake de Oreo</h3>
+          <p class="card-desc">Postre cremoso popular que combina el sabor clásico del cheesecake (tarta de queso) con las icónicas galletas de chocolate y crema.</p>
+          <div class="card-footer">
+            <span class="price">$90.00</span>
+            <button class="btn-buy" type="button" onclick="lanzarAlertaCarrito('Cheesecake de Oreo')">Comprar</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="menu-card">
+        <div class="card-media">
+          <img src="https://i.pinimg.com/1200x/4d/4b/37/4d4b3761d05c6277515eeb767d177772.jpg" alt="Tres Leches">
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Crepas</h3>
+          <p class="card-desc"> Son panqueques delgados servidos dulces (con frutas, chocolate) o salados (con jamón, queso).</p>
+          <div class="card-footer">
+            <span class="price">$65.00</span>
+            <button class="btn-buy" type="button" onclick="lanzarAlertaCarrito('Crepas')">Comprar</button>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+    <div class="footer-contenido">
+        <div class="footer-logo">Magiadulce ✨</div>
+        <div class="footer-redes">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-tiktok"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+        </div>
+        <div class="footer-info">
+            <p>📍 Calle de la Dulzura #123, Colonia Pastelito</p>
+            <p>⏰ Horario: Martes a Domingo - 9:00 AM a 8:00 PM</p>
+        </div>
+        <div class="footer-derechos">
+            <p>&copy; 2026 Magiadulce. Creado con amor y azúcar. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+// --- LÓGICA DEL MENÚ, SCROLL Y COMPORTAMIENTO VISUAL ---
+const hamburger = document.getElementById('hamburger');
+const menu = document.getElementById('menu');
+const overlay = document.getElementById('overlay');
+const header = document.getElementById('header');
+const closeBtn = document.getElementById('closeBtn');
+
+function toggleMenu() {
+  menu.classList.toggle('active');
+  overlay.classList.toggle('active');
+  document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+}
+
+hamburger.addEventListener('click', () => { hamburger.classList.toggle('active'); toggleMenu(); });
+overlay.addEventListener('click', () => { hamburger.remove('active'); toggleMenu(); });
+closeBtn.addEventListener('click', () => { hamburger.classList.remove('active'); toggleMenu(); });
+
+menu.querySelectorAll('a').forEach(a=>{
+  a.addEventListener('click',()=>{ 
+    if(menu.classList.contains('active')) toggleMenu(); 
+  });
+});
+
+window.addEventListener('scroll',()=>{ header.classList.toggle('scrolled', window.scrollY > 50); });
+
+// --- LÓGICA DEL SLIDER ---
+let slideIndex = 0;
+const slides = document.querySelectorAll('.slide');
+const indicators = document.querySelector('.indicators');
+
+// Crear indicadores dinámicamente
+slides.forEach((_, idx) => {
+    const dot = document.createElement('div');
+    if(idx === 0) dot.classList.add('active');
+    dot.addEventListener('click', () => showSlide(idx));
+    indicators.appendChild(dot);
+});
+
+function showSlide(n) {
+    slides.forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.indicators div').forEach(d => d.classList.remove('active'));
+    
+    slideIndex = (n + slides.length) % slides.length;
+    slides[slideIndex].classList.add('active');
+    document.querySelectorAll('.indicators div')[slideIndex].classList.add('active');
+}
+
+function moveSlide(n) { showSlide(slideIndex + n); }
+setInterval(() => moveSlide(1), 5000); // Cambio automático de slide cada 5 segundos
+
+// --- SCRIPT DE LOS PASTELES FLOTANTES ---
+function createFloatingCake() {
+  const container = document.getElementById('cakeBackground');
+  if(!container) return;
+
+  const emojis = ['💗', '🧁', '🍭', '🍬'];
+  const cake = document.createElement('div');
+  
+  cake.classList.add('floating-cake');
+  cake.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+  
+  cake.style.left = Math.random() * 100 + 'vw';
+  
+  const duration = Math.random() * 7 + 8;
+  cake.style.animationDuration = duration + 's';
+  
+  const size = Math.random() * 20 + 20; 
+  cake.style.fontSize = size + 'px';
+
+  container.appendChild(cake);
+
+  setTimeout(() => {
+    cake.remove();
+  }, duration * 1000);
+}
+
+setInterval(createFloatingCake, 600);
+
+// --- MODAL DE SALIDA ---
+function abrirAlertaSalir(event) {
+    event.preventDefault(); 
+    document.getElementById('modalSalir').style.display = 'flex';
+}
+
+function cerrarAlertaSalir() {
+    document.getElementById('modalSalir').style.display = 'none';
+}
+
+function confirmarSalida() {
+    window.location.href = 'https://www.google.com';
+}
+
+// --- INTERACCIÓN DE ALERTA DE COMPRA ---
+function lanzarAlertaCarrito(nombrePostre) {
+    document.getElementById('textoAlertaCarrito').innerHTML = `El producto <strong>"${nombrePostre}"</strong> ha sido agregado con éxito a tu carrito de compras.`;
+    document.getElementById('alertaCarrito').style.display = 'flex';
+}
+
+function cerrarAlertaCarrito() {
+    document.getElementById('alertaCarrito').style.display = 'none';
+}
+</script>
+</body>
+</html>

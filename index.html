@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mis Postrecitos 🧁</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <style>
+    :root {
+      --color-principal: #ff6b9d;
+      --color-secundario: #c44569;
+      --color-oscuro: #2d3436;
+      --pastel-menta: #e8f8f5;
+      --texto-oscuro: #3d5a80;
+      --rosa-pastel: #fff0f5;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+        font-family: "Poppins", sans-serif;
+        background-color: var(--rosa-pastel);
+        position: relative;
+        overflow-x: hidden;
+        padding-top: 110px;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* --- ✨ EFECTO DE CONFETI EN MOVIMIENTO REAL (CSS) --- */
+    body::before {
+        content: "";
+        position: fixed;
+        top: -100px; left: 0; width: 100%; height: 200%;
+        z-index: -1;
+        pointer-events: none;
+        background-image: 
+            radial-gradient(circle, #ff6b9d 10%, transparent 11%),
+            radial-gradient(circle, #a78bfa 12%, transparent 13%),
+            radial-gradient(circle, #f472b6 10%, transparent 11%),
+            radial-gradient(circle, #4f46e5 8%, transparent 9%),
+            radial-gradient(circle, #ffd166 15%, transparent 16%);
+        background-size: 300px 300px;
+        background-position: 0 0, 50px 150px, 150px 50px, 200px 200px, 80px 250px;
+        opacity: 0.18;
+        animation: moverConfeti 22s linear infinite;
+    }
+
+    @keyframes moverConfeti {
+        from { transform: translateY(0) rotate(0deg); }
+        to { transform: translateY(-300px) rotate(8deg); }
+    }
+
+    header {
+      position: fixed;
+      top: 0; left: 0; width: 100%;
+      padding: 15px 60px; 
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,107,157,0.1);
+      box-shadow: 0 8px 32px rgba(255,107,157,0.08);
+      z-index: 1001;
+    }
+
+    .logo {
+      font-family: "Playfair Display", serif;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--color-principal), var(--color-secundario));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      font-size: 1.8rem;
+    }
+
+    nav { 
+      display: flex; 
+      gap: 40px; 
+      align-items: center; 
+      margin-left: auto; 
+      margin-right: auto;
+    }
+
+    .menu-item-hover { position: relative; padding: 10px 0; }
+    .menu-item-hover > a {
+        text-decoration: none;
+        color: var(--color-oscuro);
+        font-size: 0.95rem;
+        font-weight: 600;
+        transition: color 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .menu-item-hover > a:hover { color: var(--color-principal); }
+
+    .caja-hover {
+        display: none;
+        position: absolute;
+        top: 100%; left: 50%;
+        transform: translateX(-50%);
+        background: white;
+        min-width: 240px;
+        box-shadow: 0 10px 30px rgba(167, 139, 250, 0.15);
+        border-radius: 14px;
+        border: 2px solid #F3E8FF;
+        margin-top: 10px;
+        overflow: hidden;
+        z-index: 1002;
+        animation: aparecerMenu 0.2s ease;
+    }
+    .caja-hover.activa { display: block; }
+
+    @keyframes aparecerMenu {
+        from { opacity: 0; transform: translateX(-50%) translateY(5px); }
+        to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    .opcion-hover {
+        padding: 12px 15px;
+        color: #4B5563;
+        font-weight: 500;
+        font-size: 0.85rem; 
+        cursor: pointer;
+        transition: all 0.2s;
+        border-bottom: 1px solid #F3E8FF;
+        display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .opcion-hover:hover { background: #FAF5FF; color: #7C3AED; padding-left: 20px; }
+
+    .zona-central-formularios {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        min-height: calc(100vh - 350px);
+    }
+
+    .seccion-formulario {
+        display: none;
+        width: 100%;
+        max-width: 520px; 
+        padding: 25px;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(255,107,157,0.1);
+        border: 2px solid #F3E8FF;
+        animation: aparecerFormularioCentrado 0.25s ease forwards;
+    }
+    
+    @keyframes aparecerFormularioCentrado {
+        from { opacity: 0; transform: scale(0.97); }
+        to { opacity: 1; transform: scale(1); }
+    }
+    
+    .seccion-formulario.activa { display: block; }
+    .seccion-formulario h2 { color: #7C3AED; margin-bottom: 18px; font-size: 1.3rem; text-align: center; }
+    
+    .grupo-campo {
+        margin-bottom: 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    .grupo-campo label { font-weight: 600; font-size: 0.85rem; color: #4B5563; }
+    
+    .fila-busqueda {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .grupo-campo input, .grupo-campo textarea, .grupo-campo select {
+        padding: 10px 12px;
+        border: 2px solid #E9D5FF;
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 0.9rem;
+        outline: none;
+        width: 100%;
+    }
+    .grupo-campo input:focus { border-color: var(--color-principal); }
+    
+    .btn-enviar {
+        background: linear-gradient(135deg, #A78BFA 0%, #F472B6 100%);
+        color: white; border: none; padding: 11px;
+        border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%;
+        margin-top: 8px; font-size: 0.9rem;
+        box-shadow: 0 4px 12px rgba(244, 114, 182, 0.2);
+    }
+
+    .btn-buscar-inline {
+        background: #4F46E5;
+        color: white; border: none; padding: 10px 16px;
+        border-radius: 8px; font-weight: 600; cursor: pointer;
+        font-size: 0.85rem; white-space: nowrap;
+        box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
+        transition: background 0.2s;
+    }
+    .btn-buscar-inline:hover { background: #4338CA; }
+
+    .recuadro-resultados {
+        background: #F9F5FF; 
+        padding: 15px; 
+        border-radius: 12px; 
+        border: 1px dashed #D8B4FE;
+        font-size: 0.85rem; 
+        line-height: 1.5; 
+        max-height: 300px; 
+        overflow-y: auto; 
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+    .modal-estructura {
+        display: none; 
+        position: fixed; 
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4); 
+        backdrop-filter: blur(8px);
+        justify-content: center; 
+        align-items: center; 
+        z-index: 2000;
+    }
+
+    .modal-acerca-tarjeta {
+        background: white;
+        padding: 25px;
+        border-radius: 24px;
+        max-width: 460px;
+        width: 92%;
+        text-align: center;
+        box-shadow: 0 20px 50px rgba(124, 58, 237, 0.15);
+        border: 2px solid #F3E8FF;
+        animation: zoomInAlert 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .tabla-info-acerca {
+        width: 100%;
+        margin: 15px 0;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+        text-align: left;
+    }
+    .tabla-info-acerca td { padding: 6px 8px; color: #4B5563; }
+    .tabla-info-acerca td strong { color: #7C3AED; }
+
+    .contenedor-integrantes {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 12px;
+        margin-bottom: 20px;
+    }
+    .tarjeta-integrante {
+        background: #FAF5FF;
+        border: 1px solid #E9D5FF;
+        border-radius: 12px;
+        padding: 10px 15px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-align: left;
+    }
+    .icono-integrante {
+        background: linear-gradient(135deg, #FF6B9D, #A78BFA);
+        color: white; width: 36px; height: 36px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center; font-size: 1rem;
+    }
+
+    @keyframes faderIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes zoomInAlert { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+    </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Mis Postrecitos 🧁</div>
+  <nav>
+    <div class="menu-item-hover">
+        <a href="postres.html"> Inicio</a>
+    </div>
+
+    <div class="menu-item-hover">
+        <a href="#" onclick="intercambiarMenu(event, 'caja-catalogo')">📋 Adm. Catálogo <i class="fa-solid fa-chevron-down" style="font-size:0.7rem;"></i></a>
+        <div id="caja-catalogo" class="caja-hover">
+            <div class="opcion-hover" onclick="activarFormulario('form-registrar')">🌸 Registrar Nuevo Postre</div>
+            <div class="opcion-hover" onclick="activarFormulario('form-modificar')">✏️ Modificar Precio por ID</div>
+            <div class="opcion-hover" onclick="activarFormulario('form-baja')">🗑️ Dar de Baja Producto</div>
+            <div class="opcion-hover" onclick="activarFormulario('form-consultar')">🔍 Consultar Catálogo</div>
+        </div>
+    </div>
+    <div class="menu-item-hover">
+        <a href="#" onclick="intercambiarMenu(event, 'caja-experiencias')">📖 Experiencias <i class="fa-solid fa-chevron-down" style="font-size:0.7rem;"></i></a>
+        <div id="caja-experiencias" class="caja-hover">
+            <div class="opcion-hover" onclick="activarFormulario('form-filtrar-fecha')">📅 Consulta por Fecha</div>
+            <div class="opcion-hover" onclick="activarFormulario('form-filtrar-historia')">📖 Consulta por Historia</div>
+        </div>
+    </div>
+
+    <div class="menu-item-hover"><a href="#" onclick="abrirModalAcercaDe(event)">🍰 Acerca De</a></div>
+    <div class="menu-item-hover"><a href="#" onclick="abrirModalSalir(event)" style="color: #ef4444;">🚪 Salir</a></div>
+  </nav>
+</header>
+
+<div class="zona-central-formularios">
+
+    <div id="form-registrar" class="seccion-formulario">
+        <h2>🌸 Registrar Nuevo Producto</h2>
+        <form onsubmit="agregarAlCatalogoBD(event)">
+            <div class="grupo-campo">
+                <label>ID del Producto:</label>
+                <input type="text" id="reg_id" placeholder="Ej. P01" required onkeypress="return soloLetrasYNumeros(event)">
+            </div>
+            <div class="grupo-campo">
+                <label>Nombre del Postre:</label>
+                <input type="text" id="reg_nombre" placeholder="Ej. Pastel de Tres Leches" required onkeypress="return soloLetras(event)">
+            </div>
+            <div class="grupo-campo">
+                <label>Precio ($):</label>
+                <input type="text" id="reg_precio" placeholder="Ej. 85.00" required onkeypress="return soloNumeros(event)">
+            </div>
+            <button type="submit" class="btn-enviar">Guardar en MongoDB</button>
+        </form>
+    </div>
+
+    <div id="form-modificar" class="seccion-formulario">
+        <h2>✏️ Modificar Precio por ID</h2>
+        <form onsubmit="modificarPrecioBD(event)">
+            <div class="grupo-campo">
+                <label>ID del Producto:</label>
+                <input type="text" id="mod_id" placeholder="Ej. P01" required onkeypress="return soloLetrasYNumeros(event)">
+            </div>
+            <div class="grupo-campo">
+                <label>Nuevo Precio ($):</label>
+                <input type="text" id="mod_precio" placeholder="Ej. 95.00" required onkeypress="return soloNumeros(event)">
+            </div>
+            <button type="submit" class="btn-enviar">Actualizar en MongoDB</button>
+        </form>
+    </div>
+
+    <div id="form-baja" class="seccion-formulario">
+        <h2>🗑️ Dar de Baja Producto</h2>
+        <form onsubmit="eliminarProductoBD(event)">
+            <div class="grupo-campo">
+                <label>Criterio de Baja:</label>
+                <select id="criterio_baja" onchange="alternarCamposBaja()">
+                    <option value="id">Eliminar por ID</option>
+                    <option value="nombre">Eliminar por Nombre</option>
+                </select>
+            </div>
+            <div class="grupo-campo" id="contenedor-baja-id">
+                <label>ID del Producto a eliminar:</label>
+                <input type="text" id="input_baja_id" placeholder="Ej. P01" onkeypress="return soloLetrasYNumeros(event)">
+            </div>
+            <div class="grupo-campo" id="contenedor-baja-nombre" style="display:none;">
+                <label>Nombre del Producto a eliminar:</label>
+                <input type="text" id="input_baja_nombre" placeholder="Ej. Pastel de Oreo" onkeypress="return soloLetras(event)">
+            </div>
+            <button type="submit" class="btn-enviar" style="background: #ef4444;">Eliminar de MongoDB</button>
+        </form>
+    </div>
+
+    <div id="form-consultar" class="seccion-formulario">
+        <h2>🔍 Productos en MongoDB</h2>
+        <div id="lista_catalogo_dinamico" style="background: #F9F5FF; padding: 12px; border-radius: 10px; font-family: monospace; font-size: 0.85rem; line-height: 1.5; max-height: 200px; overflow-y: auto; margin-bottom: 10px;">
+            Haga clic abajo para cargar datos...
+        </div>
+        <button type="button" class="btn-enviar" onclick="obtenerCatalogoMongo()">🔄 Cargar Catálogo Real</button>
+    </div>
+
+    <div id="form-filtrar-fecha" class="seccion-formulario">
+        <div style="background: white; border-radius: 12px;">
+            <h3 style="color: #4F46E5; font-size: 1.05rem; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">📅 Consulta Multimedia por Fecha</h3>
+            <div class="grupo-campo">
+                <div class="fila-busqueda">
+                    <input type="date" id="filtro_fecha_input">
+                    <button type="button" class="btn-buscar-inline" onclick="ejecutarConsultaBD()">Buscar por Fecha</button>
+                </div>
+            </div>
+            <div id="contenedor_resultados_bd" class="recuadro-resultados">
+                <p style="text-align: center; color: #9CA3AF;">Selecciona una fecha del calendario.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="form-filtrar-historia" class="seccion-formulario">
+        <div style="background: white; border-radius: 12px;">
+            <h3 style="color: #4F46E5; font-size: 1.05rem; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">📖 Consulta Multimedia por Historias</h3>
+            <div class="grupo-campo">
+                <div class="fila-busqueda">
+                    <input type="text" id="filtro_historia_input" placeholder="Ej. San Valentin, Pascua, Halloween">
+                    <button type="button" class="btn-buscar-inline" onclick="ejecutarConsultaHistoria()">Buscar por Historia</button>
+                </div>
+            </div>
+            <div id="contenedor_resultados_historias" class="recuadro-resultados">
+                <p style="text-align: center; color: #9CA3AF;">Ingresa una palabra clave para buscar por historia.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="modal-acerca" class="modal-estructura">
+    <div class="modal-acerca-tarjeta">
+        <div style="font-size: 3.5rem; margin-bottom: 10px;">🧁</div>
+        <h2 style="font-family: 'Playfair Display', serif; font-weight: 900; color: #7C3AED; font-size: 1.8rem; margin-bottom: 5px;">Mis Postrecitos</h2>
+        <span style="background: #FEE2E2; color: #EF4444; font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Sistema de Gestión Integral</span>
+        
+        <table class="tabla-info-acerca">
+            <tr>
+                <td><strong>⭐ Calidad de postres⭐</strong> Repostería Mary</td>
+                <td><strong>👥 Clientes todos los días </strong> </td><td>Calle: 12 de Noviembre, Juárez</td>
+            </tr>
+            <tr>
+                <td><strong></strong> Trabajos con esfuerzo y dedicación.</td>
+                <td><strong>📅 Creado:</strong> 1/1/2026</td>
+            </tr>
+        </table>
+
+        <p style="color: #6B7280; font-size: 0.85rem; font-weight: 600; text-align: left; margin-left: 5px; margin-bottom: 8px; border-bottom: 1px solid #F3E8FF; padding-bottom: 4px;">🎯 Integrantes del Proyecto:</p>
+        
+        <div class="contenedor-integrantes">
+            <div class="tarjeta-integrante">
+                <div class="icono-integrante"><i class="fa-solid fa-graduation-cap"></i></div>
+                <div>
+                    <h4 style="margin: 0; font-size: 0.9rem; color: #2D3436; font-weight: 700;">María de Jesús</h4>
+                    <p style="margin: 0; font-size: 0.75rem; color: #6B7280;">REPOSTERA</p>
+                </div>
+            </div>
+            <div class="tarjeta-integrante">
+                <div class="icono-integrante"><i class="fa-solid fa-code"></i></div>
+                <div>
+                    <h4 style="margin: 0; font-size: 0.9rem; color: #2D3436; font-weight: 700;">Colaborador del Proyecto</h4>
+                    <p style="margin: 0; font-size: 0.75rem; color: #6B7280;">Nulo---</p>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn-enviar" onclick="document.getElementById('modal-acerca').style.display='none'" style="margin-top: 5px;">Entendido</button>
+    </div>
+</div>
+
+<div id="modal-salir" class="modal-estructura">
+    <div style="background: white; padding: 30px; border-radius: 24px; max-width: 420px; width: 90%; text-align: center; box-shadow: 0 20px 45px rgba(244, 114, 182, 0.15); border: 2px solid #FFF0F5; animation: zoomInAlert 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+        <div style="font-size: 3rem; margin-bottom: 10px;">🚪</div>
+        <h2 style="font-family: 'Playfair Display', serif; color: #7C3AED; font-size: 1.5rem; margin-bottom: 8px;">¿Cerrar Conexión?</h2>
+        <p style="color: #6B7280; font-size: 0.9rem; margin-bottom: 22px;">Al confirmar, finalizarás la sesión del sistema de gestión y regresarás a la navegación externa.</p>
+        <div style="display: flex; gap: 12px;">
+            <button style="background: #FFB3C6; color: #C44569; border: none; padding: 11px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 50%; font-size: 0.9rem; transition: transform 0.2s, background 0.2s;" onclick="window.location.href='https://www.google.com'">Sí, Salir</button>
+            <button style="background: #D1FAE5; color: #065F46; border: none; padding: 11px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 50%; font-size: 0.9rem; transition: transform 0.2s, background 0.2s;" onclick="document.getElementById('modal-salir').style.display='none'">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<div id="mi-alerta-custom" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(5px); justify-content: center; align-items: center; z-index: 9999; animation: faderIn 0.3s ease;">
+    <div style="background: white; padding: 30px; border-radius: 20px; box-shadow: 0 20px 40px rgba(124, 58, 237, 0.15); border: 2px solid #F3E8FF; max-width: 380px; width: 90%; text-align: center; animation: zoomInAlert 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+        <div id="alerta-icono" style="font-size: 3rem; margin-bottom: 15px;">🧁</div>
+        <p id="alerta-mensaje" style="font-family: 'Poppins', sans-serif; font-weight: 600; color: #4B5563; font-size: 1rem; line-height: 1.5; margin-bottom: 20px;"></p>
+        <button onclick="cerrarAlertaCustom()" style="background: linear-gradient(135deg, #A78BFA 0%, #F472B6 100%); color: white; border: none; padding: 11px 30px; border-radius: 10px; font-family: 'Poppins', sans-serif; font-weight: 700; cursor: pointer; font-size: 0.9rem; box-shadow: 0 4px 15px rgba(244, 114, 182, 0.3); transition: transform 0.2s;">Aceptar</button>
+    </div>
+</div>
+
+<footer style="background: linear-gradient(135deg, #ffffff 0%, #fff5f8 100%); color: #2d3436; padding: 30px 20px 15px 20px; text-align: center; border-top: 3px solid #ff6b9d; box-shadow: 0 -10px 30px rgba(255,107,157,0.05); font-size: 0.9rem; margin-top: auto;">
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 15px;">
+        <div style="font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.5rem; color: #c44569;">Mis Postrecitos 🧁</div>
+        <p style="font-style: italic; color: #7c5864; font-size: 0.88rem; max-width: 500px;">"Horneando momentos inolvidables y llenando tu vida de dulzura, magia y sabor hecho con amor."</p>
+        <div style="display: flex; gap: 20px; font-size: 1.2rem; margin: 5px 0;">
+            <a href="#" style="color: #ff6b9d;"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#" style="color: #ff6b9d;"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" style="color: #ff6b9d;"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="#" style="color: #ff6b9d;"><i class="fa-solid fa-cookie-bite"></i></a>
+        </div>
+        <div style="font-size: 0.78rem; color: #9ca3af; border-top: 1px solid rgba(255,107,157,0.1); width: 100%; padding-top: 15px; margin-top: 5px;">
+            <p>&copy; 2026 - Mis Postrecitos. Todos los derechos reservados. | Conexión Real a MongoDB</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+// --- 🔔 ALERTAS Y MENÚS DEL SISTEMA ---
+function mostrarAlerta(mensaje, icono = "🧁") {
+    document.getElementById("alerta-icono").innerText = icono;
+    document.getElementById("alerta-mensaje").innerText = mensaje;
+    document.getElementById("mi-alerta-custom").style.display = "flex";
+}
+
+function cerrarAlertaCustom() {
+    document.getElementById("mi-alerta-custom").style.display = "none";
+}
+
+function intercambiarMenu(event, idCaja) {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    const cajaDestino = document.getElementById(idCaja);
+    const yaEstaActiva = cajaDestino.classList.contains('activa');
+    
+    document.querySelectorAll('.caja-hover').forEach(caja => caja.classList.remove('activa'));
+    
+    if (!yaEstaActiva) {
+        cajaDestino.classList.add('activa');
+    }
+}
+
+function activarFormulario(idFormulario) {
+    document.querySelectorAll('.seccion-formulario').forEach(form => form.classList.remove('activa'));
+    
+    const formActivo = document.getElementById(idFormulario);
+    if (formActivo) {
+        formActivo.classList.add('activa');
+    }
+    
+    document.querySelectorAll('.caja-hover').forEach(caja => caja.classList.remove('activa'));
+}
+
+function alternarCamposBaja() {
+    const criterion = document.getElementById('criterio_baja').value;
+    if (criterion === 'id') {
+        document.getElementById('contenedor-baja-id').style.display = 'flex';
+        document.getElementById('contenedor-baja-nombre').style.display = 'none';
+        document.getElementById('input_baja_nombre').value = '';
+    } else {
+        document.getElementById('contenedor-baja-id').style.display = 'none';
+        document.getElementById('contenedor-baja-nombre').style.display = 'flex';
+        document.getElementById('input_baja_id').value = '';
+    }
+}
+
+function abrirModalAcercaDe(e) { e.preventDefault(); document.getElementById('modal-acerca').style.display = 'flex'; }
+function abrirModalSalir(e) { e.preventDefault(); document.getElementById('modal-salir').style.display = 'flex'; }
+
+document.addEventListener('click', () => {
+    document.querySelectorAll('.caja-hover').forEach(caja => caja.classList.remove('activa'));
+});
+
+
+// --- 🔌 CONEXIÓN CON BACKEND (MONGODB) ---
+
+async function obtenerCatalogoMongo() {
+    const contenedor = document.getElementById('lista_catalogo_dinamico');
+    if(!contenedor) return;
+    contenedor.innerHTML = "⏳ Conectando con MongoDB...";
+    
+    try {
+        const res = await fetch('http://localhost:3000/api/postres');
+        const productos = await res.json();
+        
+        if(productos.length === 0) {
+            contenedor.innerHTML = "📭 No hay productos registrados comercialmente.";
+            return;
+        }
+        
+        contenedor.innerHTML = productos.map(p => `
+            <div><strong>ID:</strong> ${p.idProducto} | <strong>Nombre:</strong> ${p.nombre} | <strong>Precio:</strong> $${p.precio}</div>
+            <hr style="border-color:#F3E8FF; margin:4px 0;">
+        `).join('');
+    } catch (err) {
+        contenedor.innerHTML = "❌ Error al conectar con el servidor backend.";
+    }
+}
+
+async function agregarAlCatalogoBD(event) {
+    event.preventDefault();
+    const idProducto = document.getElementById('reg_id').value;
+    const nombre = document.getElementById('reg_nombre').value;
+    const precio = document.getElementById('reg_precio').value;
+
+    try {
+        const res = await fetch('http://localhost:3000/api/postres', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ idProducto, nombre, precio: parseFloat(precio) })
+        });
+        const data = await res.json();
+        mostrarAlerta(data.mensaje || "🧁 ¡Procesado correctamente!");
+        event.target.reset();
+        obtenerCatalogoMongo();
+    } catch (err) { mostrarAlerta("Error de red con el servidor.", "❌"); }
+}
+
+async function modificarPrecioBD(event) {
+    event.preventDefault();
+    const id = document.getElementById('mod_id').value;
+    const nuevoPrecio = document.getElementById('mod_precio').value;
+
+    try {
+        const res = await fetch(`http://localhost:3000/api/postres/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ precio: parseFloat(nuevoPrecio) })
+        });
+        const data = await res.json();
+        mostrarAlerta(data.mensaje);
+        event.target.reset();
+        obtenerCatalogoMongo();
+    } catch(err) { mostrarAlerta("Error al actualizar.", "❌"); }
+}
+
+async function eliminarProductoBD(event) {
+    event.preventDefault();
+    const criterion = document.getElementById('criterio_baja').value;
+    let url = '';
+
+    if(criterion === 'id') {
+        const id = document.getElementById('input_baja_id').value;
+        url = `http://localhost:3000/api/postres/id/${id}`;
+    } else {
+        const nombre = document.getElementById('input_baja_nombre').value;
+        url = `http://localhost:3000/api/postres/nombre/${nombre}`;
+    }
+
+    try {
+        const res = await fetch(url, { method: 'DELETE' });
+        const data = await res.json();
+        mostrarAlerta(data.mensaje);
+        event.target.reset();
+        obtenerCatalogoMongo();
+    } catch(err) { mostrarAlerta("Error al eliminar.", "❌"); }
+}
+
+
+// --- 🔍 SECCIÓN DE BÚSQUEDAS MULTIMEDIA ---
+
+async function ejecutarConsultaBD() {
+    const inputFecha = document.getElementById('filtro_fecha_input');
+    const contenedor = document.getElementById('contenedor_resultados_bd');
+    if (!inputFecha || !contenedor) return;
+
+    let fechaCalendario = inputFecha.value; 
+    if(!fechaCalendario) {
+        contenedor.innerHTML = `<p style="text-align: center; color: #ef4444; font-weight: bold;">⚠ Selecciona una fecha válida en el calendario.</p>`;
+        return;
+    }
+
+    const partes = fechaCalendario.split('-');
+    const fechaFormateada = `${partes[2]}-${partes[1]}-${partes[0]}`;
+
+    contenedor.innerHTML = "<p style='text-align:center; color:#4F46E5; font-weight: bold;'>⏳ Extrayendo datos de la base de datos...</p>";
+
+    try {
+        const res = await fetch(`http://localhost:3000/api/experiencias?fecha=${fechaFormateada}`);
+        const data = await res.json();
+
+        if(data && data.historias) { 
+            contenedor.innerHTML = `
+                <div style="text-align: left; background: #FAF5FF; padding: 12px; border-radius: 8px; border: 1px solid #E9D5FF;">
+                    <p style="margin-bottom:8px; color:#2D3436;">📖 <strong>Historia:</strong> ${data.historias}</p>
+                    ${data.grafica ? `<div style="margin-bottom:10px;">🖼 <strong>Imagen:</strong><br><img src="${data.grafica}" style="width:100%; max-width:280px; border-radius:6px; margin-top:4px; display:block;"></div>` : ''}
+                    ${data.audio ? `<div style="margin-bottom:8px;">🎵 <strong>Audio:</strong><br><audio src="${data.audio}" controls style="margin-top:4px; width:100%; max-width:280px; display:block;"></audio></div>` : ''}
+                    ${data.video ? `<div style="margin-bottom:4px;">🎥 <strong>Video:</strong><br><video src="${data.video}" controls style="margin-top:4px; width:100%; max-width:280px; display:block;"></video></div>` : ''}
+                </div>
+            `;
+        } else {
+            contenedor.innerHTML = `<p style="text-align: center; color: #ef4444; font-weight: bold;">❌ No hay multimedia registrada para la fecha (${fechaFormateada}).</p>`;
+        }
+    } catch (err) {
+        contenedor.innerHTML = `<p style="text-align: center; color: #b91c1c; font-weight: bold;">❌ Error al conectar con el servidor.</p>`;
+    }
+}
+
+async function ejecutarConsultaHistoria() {
+    const inputHistoria = document.getElementById('filtro_historia_input');
+    const contenedor = document.getElementById('contenedor_resultados_historias');
+    if (!inputHistoria || !contenedor) return;
+
+    let palabraClave = inputHistoria.value.trim();
+    if(!palabraClave) {
+        contenedor.innerHTML = `<p style="text-align: center; color: #ef4444; font-weight: bold;">⚠ Ingresa una palabra clave para buscar.</p>`;
+        return;
+    }
+
+    contenedor.innerHTML = "<p style='text-align:center; color:#4F46E5; font-weight: bold;'>⏳ Rastreando bitácora...</p>";
+
+    try {
+        const res = await fetch(`http://localhost:3000/api/experiencias?historia=${encodeURIComponent(palabraClave)}`);
+        const data = await res.json();
+
+        if(data && data.historias) { 
+            contenedor.innerHTML = `
+                <div style="text-align: left; background: #FAF5FF; padding: 12px; border-radius: 8px; border: 1px solid #E9D5FF;">
+                    <p style="margin-bottom:6px; color:#2D3436;">📖 <strong>Historia encontrada:</strong> ${data.historias}</p>
+                    <p style="font-size:0.8rem; color:#4F46E5; margin-bottom:10px; font-weight: bold;">📅 Fecha: ${data.fecha}</p>
+                    ${data.grafica ? `<div style="margin-bottom:10px;">🖼 <strong>Diseño Gráfico:</strong><br><img src="${data.grafica}" style="width:100%; max-width:280px; border-radius:6px; margin-top:4px; display:block;"></div>` : ''}
+                    ${data.audio ? `<div style="margin-bottom:8px;">🎵 <strong>Reproductor Audio:</strong><br><audio src="${data.audio}" controls style="margin-top:4px; width:100%; max-width:280px; display:block;"></audio></div>` : ''}
+                    ${data.video ? `<div style="margin-bottom:4px;">🎥 <strong>Video Adjunto:</strong><br><video src="${data.video}" controls style="margin-top:4px; width:100%; max-width:280px; display:block;"></video></div>` : ''}
+                </div>
+            `;
+        } else {
+            contenedor.innerHTML = `<p style="text-align: center; color: #ef4444; font-weight: bold;">❌ No se encontraron historias que contengan: "${palabraClave}"</p>`;
+        }
+    } catch (err) {
+        contenedor.innerHTML = `<p style="text-align: center; color: #b91c1c; font-weight: bold;">❌ Error al conectar con el servidor.</p>`;
+    }
+}
+
+// --- ⌨ VALIDACIONES DE TECLADO ---
+function soloLetras(e) {
+    const key = e.keyCode || e.which;
+    const teclado = String.fromCharCode(key).toLowerCase();
+    const letras = " áéíóúabcdefghijklmnñopqrstuvwxyz";
+    
+    if (letras.indexOf(teclado) === -1) {
+        return false;
+    }
+    return true;
+}
+
+function soloNumeros(e) {
+    const key = e.keyCode || e.which;
+    const teclado = String.fromCharCode(key);
+    const numeros = "0123456789.";
+    
+    if (numeros.indexOf(teclado) === -1) {
+        return false;
+    }
+    return true;
+}
+
+function soloLetrasYNumeros(e) {
+    const key = e.keyCode || e.which;
+    const teclado = String.fromCharCode(key).toLowerCase();
+    const permitidos = "abcdefghijklmnopqrstuvwxyz0123456789-áéíóú";
+    
+    if (permitidos.indexOf(teclado) === -1) {
+        return false;
+    }
+    return true;
+}
+</script>
+</body>
+</html>
